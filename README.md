@@ -141,13 +141,15 @@ http://test-lb-tf-1860575745.ap-south-1.elb.amazonaws.com
 
 ## 📸 Screenshots
 
-(Add screenshots here: ALB, ASG, Target Group Health, etc.)
 ## Architecture Diagram
 ![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Architecture-Diagram.png?raw=true)
+
 ## VPC
 ![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/VPC.png?raw=true)
+
 ## SubNet
 ![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/SubNet.png?raw=true)
+
 ## Public SubNet Route Table 
 ![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Public-RT.png?raw=true)
 ## Private SubNet Route Table
