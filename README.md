@@ -142,9 +142,42 @@ http://test-lb-tf-1860575745.ap-south-1.elb.amazonaws.com
 ## 📸 Screenshots
 
 (Add screenshots here: ALB, ASG, Target Group Health, etc.)
+## Architecture Diagram
 ![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Architecture-Diagram.png?raw=true)
+## VPC
 ![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/VPC.png?raw=true)
-
+## SubNet
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/SubNet.png?raw=true)
+## Public SubNet Route Table 
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Public-RT.png?raw=true)
+## Private SubNet Route Table
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Private-RT.png?raw=true)
+## Public Route Table Associated with
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Public-RT-Association.png?raw=true)
+## Private Route Table Associated with
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Private-RT-Association.png?raw=true)
+## IGW
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/IGW.png?raw=true)
+## NAT
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/NAT-Gateway.png?raw=true)
+## EC2
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/EC2.png?raw=true)
+## Target Group
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Target-Group.png?raw=true)
+## Application Load Balancer
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/ALB.png?raw=true)
+## Auto Scalling Group
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/ASG.png?raw=true)
+## Auto Scalling Group Activities
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/ASG-Activity.png?raw=true)
+## Auto Scalling Group Configeration
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/ASG-Config.png?raw=true)
+## LB-SG
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/ALB-SG.png?raw=true)
+## EC2-SG
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/EC2-SG.png?raw=true)
+## Output
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/ALB-Output.png?raw=true)
 ---
 
 ## 👨‍💻 Author
