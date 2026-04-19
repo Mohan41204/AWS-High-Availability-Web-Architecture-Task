@@ -84,7 +84,7 @@ NAT Gateway (Outbound Internet Access)
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task
 cd your-repo-name
 ```
 
