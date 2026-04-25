@@ -1,489 +1,125 @@
 # 🚀 AWS High Availability Web Architecture
 
-> Production-grade, highly available web infrastructure on AWS — built with Terraform (IaC), automated with GitHub Actions CI/CD, and designed for resilience, security, and scalability.
-
-[![Terraform](https://img.shields.io/badge/Terraform-1.x-623CE4?logo=terraform)](https://www.terraform.io/)
-[![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?logo=amazonaws)](https://aws.amazon.com/)
-[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=githubactions)](https://github.com/features/actions)
-[![Nginx](https://img.shields.io/badge/Web%20Server-Nginx-009639?logo=nginx)](https://nginx.org/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+> Production-grade, highly available web infrastructure on AWS — built with Terraform (IaC), automated with GitHub Actions CI/CD, and designed for scalability, reliability, and security.
 
 ---
 
 ## 📌 Project Overview
 
-This project provisions and manages a **production-ready, fault-tolerant web infrastructure** on AWS using infrastructure as code principles. It demonstrates a complete DevOps lifecycle — from manual cloud provisioning to a fully automated deployment pipeline.
+This project demonstrates a **real-world DevOps workflow**, where a highly available AWS infrastructure is:
 
-The architecture is designed around AWS best practices:
-- **High availability** across multiple Availability Zones
-- **Security by design** with private subnets, NAT Gateways, and no direct EC2 exposure
-- **Auto Scaling** to handle variable traffic loads automatically
-- **Remote state management** for safe team collaboration
-- **Full CI/CD automation** with validation, security scanning, and zero-touch deployments
+- Designed and deployed manually  
+- Converted into **Infrastructure as Code (Terraform)**  
+- Fully automated using a **CI/CD pipeline (GitHub Actions)**  
 
----
-
-## 🚀 Project Evolution
-
-This project was built iteratively, reflecting a real-world DevOps maturity journey:
-
-```
-Phase 1 → Manual AWS Console Setup
-          "Click-ops" — resources created manually via AWS Management Console.
-          Functional but not reproducible, version-controlled, or scalable.
-
-Phase 2 → Terraform (Infrastructure as Code)
-          All AWS resources converted into modular Terraform configurations.
-          Infrastructure became reproducible, versionable, and reviewable via Pull Requests.
-
-Phase 3 → GitHub Actions CI/CD Pipeline
-          Deployment fully automated — every push triggers validation, security scans,
-          planning, and controlled apply. Zero manual steps required.
-```
-
-This progression reflects how modern cloud infrastructure evolves from experimentation to enterprise-grade automation.
+The architecture ensures:
+- High availability across multiple AZs  
+- Secure private infrastructure  
+- Automated scaling and self-healing  
+- Reproducible and version-controlled deployments  
 
 ---
 
-## 🏛️ Architecture Overview
+## 🚀 Project Journey
 
-```
-                          ┌─────────────────────────────────────────┐
-                          │              AWS Cloud (VPC)             │
-                          │                                          │
-          Internet        │   ┌──────────────────────────────────┐  │
-    ──────────────────►   │   │         Public Subnets           │  │
-                          │   │  ┌──────────┐  ┌─────────────┐  │  │
-                          │   │  │    ALB   │  │ NAT Gateway │  │  │
-                          │   │  └────┬─────┘  └──────┬──────┘  │  │
-                          │   └───────│────────────────│─────────┘  │
-                          │           │                │             │
-                          │   ┌───────│────────────────│─────────┐  │
-                          │   │       ▼  Private Subnets         │  │
-                          │   │  ┌─────────┐   ┌─────────┐      │  │
-                          │   │  │  EC2    │   │  EC2    │      │  │
-                          │   │  │(Nginx)  │   │(Nginx)  │      │  │
-                          │   │  └─────────┘   └─────────┘      │  │
-                          │   │       Auto Scaling Group          │  │
-                          │   │       (min:1 | desired:2 | max:3) │  │
-                          │   └───────────────────────────────────┘  │
-                          └─────────────────────────────────────────┘
-                                    │
-                          ┌─────────▼─────────┐
-                          │   Remote Backend   │
-                          │  S3 (tfstate)      │
-                          │  DynamoDB (lock)   │
-                          └───────────────────┘
-```
+### 🔹 Phase 1 — Manual Setup
+- Infrastructure created using AWS Console  
+- Understood core concepts (VPC, ALB, ASG, Networking)  
 
-**Traffic Flow:**
-1. User request hits the **Application Load Balancer** (ALB) in the public subnet
-2. ALB routes traffic to healthy **EC2 instances** (Nginx) in private subnets
-3. EC2 instances access the internet via **NAT Gateway** (outbound only)
-4. Auto Scaling Group ensures the right number of instances are always running
+### 🔹 Phase 2 — Terraform (IaC)
+- Entire setup converted into Terraform  
+- Infrastructure became reusable, scalable, and version-controlled  
+
+### 🔹 Phase 3 — CI/CD Automation
+- Deployment automated using GitHub Actions  
+- Pipeline handles validation, planning, and deployment  
+
+---
+
+## 🏗️ Architecture
+
+![Architecture Diagram](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Architecture-Diagram.png?raw=true)
 
 ---
 
 ## 🛠️ Technologies Used
 
-| Category | Technology | Purpose |
-|---|---|---|
-| **Cloud Provider** | AWS | Core infrastructure platform |
-| **IaC** | Terraform | Infrastructure provisioning & management |
-| **Compute** | EC2 + Auto Scaling Group | Web server instances with automatic scaling |
-| **Networking** | VPC, Subnets, NAT Gateway | Isolated, secure network architecture |
-| **Load Balancing** | Application Load Balancer (ALB) | Traffic distribution & health checks |
-| **Web Server** | Nginx | HTTP server on EC2 instances |
-| **State Backend** | S3 + DynamoDB | Remote state storage and locking |
-| **CI/CD** | GitHub Actions | Automated pipeline for validate → plan → apply |
-| **Linting** | TFLint | Terraform code quality checks |
-| **Security Scanning** | tfsec | Static security analysis for IaC |
-
----
-
-## 📦 Terraform Module Structure
-
-The project follows a **modular Terraform design** — each AWS concern is encapsulated in its own reusable module.
-
-```
-terraform/
-├── main.tf                  # Root module — wires all modules together
-├── variables.tf             # Input variables for the root module
-├── outputs.tf               # Exposed outputs (ALB DNS, VPC ID, etc.)
-├── backend.tf               # Remote state configuration (S3 + DynamoDB)
-├── terraform.tfvars         # Environment-specific variable values
-│
-└── modules/
-    ├── vpc/                 # VPC, subnets, IGW, route tables
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── alb/                 # Application Load Balancer, target groups, listeners
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── asg/                 # Launch template, Auto Scaling Group, scaling policies
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    └── nat/                 # NAT Gateway and Elastic IP
-        ├── main.tf
-        ├── variables.tf
-        └── outputs.tf
-```
-
-**Why modular?**
-- Each module has a **single responsibility** — easier to test and maintain
-- Modules can be **reused** across environments (dev, staging, prod) with different variables
-- Changes to one module don't affect others, reducing blast radius
-- Outputs from one module are passed as inputs to another (e.g., VPC outputs feed ALB and ASG)
+- AWS (VPC, EC2, ALB, Auto Scaling Group, NAT Gateway, S3, DynamoDB)  
+- Terraform  
+- GitHub Actions (CI/CD)  
+- TFLint (linting)  
+- Nginx  
 
 ---
 
 ## 🗄️ Remote State Management
 
-Terraform state is stored remotely to enable **team collaboration** and **state locking**.
+To make the infrastructure production-ready:
 
-### S3 — State Storage
+- **S3 Bucket** → Stores Terraform state  
+- **DynamoDB Table** → Provides state locking  
 
-The `terraform.tfstate` file is stored in a versioned S3 bucket, providing:
-- A single source of truth for infrastructure state
-- State history via S3 versioning (easy rollback)
-- Encrypted at rest using SSE-S3
-
-### DynamoDB — State Locking
-
-A DynamoDB table handles distributed locking:
-- Prevents two users (or pipeline runs) from applying simultaneously
-- Lock is automatically acquired before `terraform apply` and released after
-- Avoids state corruption in team environments
-
-```hcl
-# backend.tf
-terraform {
-  backend "s3" {
-    bucket         = "your-terraform-state-bucket"
-    key            = "aws-ha-architecture/terraform.tfstate"
-    region         = "us-east-1"
-    dynamodb_table = "terraform-state-lock"
-    encrypt        = true
-  }
-}
-```
+### Benefits:
+- Prevents state conflicts  
+- Enables team collaboration  
+- Ensures safe deployments  
 
 ---
 
 ## ⚙️ CI/CD Pipeline
 
-The GitHub Actions pipeline enforces a **validate → scan → plan → apply** workflow, ensuring that only safe, reviewed infrastructure changes are deployed.
+The pipeline follows a **CI → CD approach**:
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                      CI Stage (on every PR/push)                 │
-│                                                                  │
-│  terraform init → terraform validate → terraform plan            │
-│       ↓                   ↓                  ↓                   │
-│  tflint (lint)       tfsec (security)   Save tfplan artifact     │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                    (merge to main only)
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                      CD Stage (on main merge)                    │
-│                                                                  │
-│    Download tfplan artifact → terraform apply (auto-approved)    │
-└──────────────────────────────────────────────────────────────────┘
-```
+### 🧪 CI Stage
+- `terraform init`  
+- `terraform validate`  
+- `terraform plan`  
+- `tflint` (code quality)  
+- Generates **tfplan artifact**  
 
-### CI Stage — Continuous Integration
+### 🚀 CD Stage
+- Downloads saved plan  
+- Executes `terraform apply`  
 
-| Step | Tool | Purpose |
-|---|---|---|
-| `terraform init` | Terraform | Initializes providers and remote backend |
-| `terraform validate` | Terraform | Validates HCL syntax and configuration correctness |
-| `terraform plan` | Terraform | Generates and saves execution plan (`tfplan` artifact) |
-| `tflint` | TFLint | Enforces Terraform best practices and catches common errors |
-| `tfsec` | tfsec | Scans for security misconfigurations in IaC code |
-
-### CD Stage — Continuous Deployment
-
-| Step | Tool | Purpose |
-|---|---|---|
-| Download artifact | GitHub Actions | Retrieves the `tfplan` from the CI stage |
-| `terraform apply` | Terraform | Applies the exact plan generated in CI — no surprises |
-
-> **Why use the tfplan artifact?**
-> The apply stage uses the exact same plan generated during CI. This means what was reviewed and validated is exactly what gets deployed — no drift between plan and apply.
-
-### Pipeline File
-
-```yaml
-# .github/workflows/terraform.yml (simplified)
-
-name: Terraform CI/CD
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  ci:
-    name: Validate & Plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Validate
-        run: terraform validate
-
-      - name: Run TFLint
-        uses: terraform-linters/setup-tflint@v3
-        run: tflint --recursive
-
-      - name: Run tfsec
-        uses: aquasecurity/tfsec-action@v1.0.0
-
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
-
-      - name: Upload Plan Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan
-          path: tfplan
-
-  cd:
-    name: Apply Infrastructure
-    runs-on: ubuntu-latest
-    needs: ci
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-
-      - name: Download Plan Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: tfplan
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
-```
+### Key Highlights:
+- Separation of validation and deployment  
+- Artifact-based deployment (same plan used in apply)  
+- Fully automated infrastructure provisioning  
 
 ---
 
 ## ✨ Key Features
 
 ### 🌐 Networking
-- **Custom VPC** with public and private subnet separation across multiple AZs
-- **Internet Gateway** for public subnet outbound access
-- **NAT Gateway** allows private EC2 instances to pull updates/packages without being publicly accessible
-- **Route tables** strictly control traffic flow between subnets
+- Custom VPC with public & private subnets  
+- Internet Gateway and NAT Gateway  
+- Controlled routing between layers  
 
-### ⚖️ Load Balancing & Auto Scaling
-- **ALB** performs health checks and only routes to healthy targets
-- **Auto Scaling Group** maintains the desired instance count and replaces unhealthy instances automatically
-- Scaling configuration: **min: 1 | desired: 2 | max: 3**
-- EC2 instances are spread across AZs for fault tolerance
+### ⚖️ Load Balancing & Scaling
+- Application Load Balancer with health checks  
+- Auto Scaling Group:
+  - Min: 1  
+  - Desired: 2  
+  - Max: 3  
+- Self-healing infrastructure  
 
 ### 🔒 Security
-- EC2 instances live in **private subnets** — no direct internet exposure
-- **Security groups** follow least-privilege: ALB accepts HTTP/HTTPS; EC2 only accepts traffic from ALB
-- tfsec integrated into CI catches security misconfigurations before deployment
-- State stored encrypted in S3
+- EC2 instances in private subnets  
+- No direct public access  
+- Controlled access via security groups  
 
 ### 🤖 Automation
-- Every infrastructure change goes through automated **lint → security scan → plan → apply**
-- **No manual AWS Console changes** required after initial setup
-- Pipeline artifacts ensure CI-generated plan is exactly what gets applied in CD
+- Infrastructure fully managed via Terraform  
+- CI/CD pipeline automates deployment  
+- No manual intervention required  
 
 ---
 
 ## 🚀 Deployment Steps
 
-### Prerequisites
-
-- AWS account with appropriate IAM permissions
-- Terraform `>= 1.0` installed
-- AWS CLI configured (`aws configure`)
-- GitHub repository with Actions enabled
-
-### 1. Clone the Repository
-
 ```bash
-git clone https://github.com/your-username/aws-ha-architecture.git
-cd aws-ha-architecture
-```
+git clone https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task
+cd AWS-High-Availability-Web-Architecture-Task
 
-### 2. Create Remote Backend Resources
-
-Before initializing Terraform, create the S3 bucket and DynamoDB table manually (one-time setup):
-
-```bash
-# Create S3 bucket for state
-aws s3api create-bucket \
-  --bucket your-terraform-state-bucket \
-  --region us-east-1
-
-# Enable versioning
-aws s3api put-bucket-versioning \
-  --bucket your-terraform-state-bucket \
-  --versioning-configuration Status=Enabled
-
-# Create DynamoDB table for locking
-aws dynamodb create-table \
-  --table-name terraform-state-lock \
-  --attribute-definitions AttributeName=LockID,AttributeType=S \
-  --key-schema AttributeName=LockID,KeyType=HASH \
-  --billing-mode PAY_PER_REQUEST
-```
-
-### 3. Configure Variables
-
-```bash
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your values (region, AMI ID, key pair, etc.)
-```
-
-### 4. Initialize Terraform
-
-```bash
 terraform init
-```
-
-### 5. Plan & Review
-
-```bash
-terraform plan
-```
-
-### 6. Apply Infrastructure
-
-```bash
 terraform apply
-```
-
-### 7. CI/CD (Automated)
-
-Add the following secrets to your GitHub repository:
-
-| Secret | Description |
-|---|---|
-| `AWS_ACCESS_KEY_ID` | IAM user access key |
-| `AWS_SECRET_ACCESS_KEY` | IAM user secret key |
-
-Push to `main` (or open a PR) — the pipeline handles everything from there.
-
----
-
-## 🧪 Testing
-
-### Infrastructure Validation
-
-```bash
-# Validate Terraform syntax and configuration
-terraform validate
-
-# Check for Terraform best practice violations
-tflint --recursive
-
-# Run static security analysis
-tfsec .
-```
-
-### Connectivity Testing
-
-Once deployed, retrieve the ALB DNS name from Terraform outputs:
-
-```bash
-terraform output alb_dns_name
-```
-
-Then verify the web server is reachable:
-
-```bash
-# Basic HTTP check
-curl http://<alb_dns_name>
-
-# Expect HTTP 200 from Nginx
-curl -o /dev/null -s -w "%{http_code}" http://<alb_dns_name>
-```
-
-### Auto Scaling Verification
-
-1. Navigate to **EC2 → Auto Scaling Groups** in the AWS Console
-2. Manually terminate one EC2 instance
-3. Observe the ASG automatically launch a replacement within ~2 minutes
-
-### ALB Health Checks
-
-1. Navigate to **EC2 → Target Groups** in the AWS Console
-2. Verify all targets show status `healthy`
-3. Check health check thresholds and response codes
-
----
-
-## 🔮 Future Improvements
-
-| Improvement | Description |
-|---|---|
-| **HTTPS / SSL** | Add ACM certificate and HTTPS listener to ALB |
-| **Custom Domain** | Integrate Route 53 for a custom domain with DNS failover |
-| **WAF** | Attach AWS WAF to ALB for Layer 7 protection |
-| **CloudWatch Alarms** | Add CPU/request-based alarms tied to scaling policies |
-| **Multi-environment** | Separate Terraform workspaces or directories for dev/staging/prod |
-| **RDS Backend** | Add a managed relational database in private subnets |
-| **Cost Optimization** | Introduce Spot Instances in the ASG for non-critical capacity |
-| **Terratest** | Write automated infrastructure tests using Terratest (Go) |
-| **Terraform Drift Detection** | Scheduled pipeline job to detect config drift |
-| **Secrets Manager** | Migrate sensitive config to AWS Secrets Manager |
-
----
-
-## 📁 Repository Structure
-
-```
-.
-├── .github/
-│   └── workflows/
-│       └── terraform.yml       # GitHub Actions CI/CD pipeline
-├── modules/
-│   ├── vpc/                    # VPC and networking
-│   ├── alb/                    # Application Load Balancer
-│   ├── asg/                    # Auto Scaling Group and Launch Template
-│   └── nat/                    # NAT Gateway
-├── main.tf                     # Root module
-├── variables.tf                # Input variables
-├── outputs.tf                  # Terraform outputs
-├── backend.tf                  # Remote state configuration
-├── terraform.tfvars.example    # Example variable values
-└── README.md
-```
-
----
-
-## 👤 Author
-
-**Your Name**
-- GitHub: https://github.com/mohan41204
-- LinkedIn: [linkedin.com/in/your-profile](www.linkedin.com/in/mohandevop)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
-
-> ⭐ If you found this project useful or learned something from it, consider giving it a star!
