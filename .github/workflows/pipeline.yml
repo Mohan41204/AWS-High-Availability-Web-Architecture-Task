@@ -1,9 +1,66 @@
-name: CI/CD Pipeline
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
+  test:
+    name: Testing terraform code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::831161435315:role/GitHub
+          aws-region: ap-south-1
+      
+      - name: terraform init
+        run: terraform init -input=false
+
+      - name: terraform validate
+        run: terraform validate
+
+      - name: terraform plan
+        run: terraform plan -input=false
+
+  Creating_Infra:
+    name: AWS infrastructure creation 
+    needs: test
+    runs-on: ubuntu-latest 
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'    
     
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::831161435315:role/GitHub
+          aws-region: ap-south-1
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        
+      - name: terraform init
+        run: terraform init -input=false
+
+      - name: terraform plan 
+        run: terraform plan -input=false
+
+      - name: tf apply
+        run: terraform apply -auto-approve -input=false
