@@ -47,34 +47,7 @@ This progression reflects how modern cloud infrastructure evolves from experimen
 
 ## 🏛️ Architecture Overview
 
-```
-                          ┌─────────────────────────────────────────┐
-                          │              AWS Cloud (VPC)             │
-                          │                                          │
-          Internet        │   ┌──────────────────────────────────┐  │
-    ──────────────────►   │   │         Public Subnets           │  │
-                          │   │  ┌──────────┐  ┌─────────────┐  │  │
-                          │   │  │    ALB   │  │ NAT Gateway │  │  │
-                          │   │  └────┬─────┘  └──────┬──────┘  │  │
-                          │   └───────│────────────────│─────────┘  │
-                          │           │                │             │
-                          │   ┌───────│────────────────│─────────┐  │
-                          │   │       ▼  Private Subnets         │  │
-                          │   │  ┌─────────┐   ┌─────────┐      │  │
-                          │   │  │  EC2    │   │  EC2    │      │  │
-                          │   │  │(Nginx)  │   │(Nginx)  │      │  │
-                          │   │  └─────────┘   └─────────┘      │  │
-                          │   │       Auto Scaling Group          │  │
-                          │   │       (min:1 | desired:2 | max:3) │  │
-                          │   └───────────────────────────────────┘  │
-                          └─────────────────────────────────────────┘
-                                    │
-                          ┌─────────▼─────────┐
-                          │   Remote Backend   │
-                          │  S3 (tfstate)      │
-                          │  DynamoDB (lock)   │
-                          └───────────────────┘
-```
+![image alt](https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task/blob/main/Task-2-Images/Architecture-Diagram.png?raw=true)
 
 **Traffic Flow:**
 1. User request hits the **Application Load Balancer** (ALB) in the public subnet
