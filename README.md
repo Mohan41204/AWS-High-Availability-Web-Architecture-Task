@@ -1,4 +1,4 @@
-# 🏗️ AWS High Availability Web Architecture
+# 🚀 AWS High Availability Web Architecture
 
 > Production-grade, highly available web infrastructure on AWS — built with Terraform (IaC), automated with GitHub Actions CI/CD, and designed for resilience, security, and scalability.
 
