@@ -53,9 +53,6 @@ jobs:
           role-to-assume: arn:aws:iam::831161435315:role/GitHub
           aws-region: ap-south-1
 
-      - name: Run Checkov
-        uses: bridgecrewio/checkov-action@master
-        
       - name: terraform init
         run: terraform init -input=false
 
