@@ -304,7 +304,7 @@
 #   health_check_grace_period = 60
 #   health_check_type         = "ELB"
 #   vpc_zone_identifier       = [aws_subnet.private_subnet_2.id, aws_subnet.private_subnet_1.id]
-  
+
 #   depends_on = [aws_lb_listener.http]
 
 #   tag {
