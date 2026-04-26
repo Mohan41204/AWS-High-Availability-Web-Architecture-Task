@@ -265,8 +265,7 @@ Add the following secrets to your GitHub repository:
 
 | Secret | Description |
 |---|---|
-| `MY_ARN` | GitHub Actions uses OpenID Connect (OIDC) to securely authenticate with AWS without storing long-term credentials. |
-Push to `main` (or open a PR) — the pipeline handles everything from there.
+| `MY_ARN` | GitHub Actions uses OpenID Connect (OIDC) to securely authenticate with AWS without storing long-term credentials. Push to `main` (or open a PR) — the pipeline handles everything from there.
 
 ---
 
