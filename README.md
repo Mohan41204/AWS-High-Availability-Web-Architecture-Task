@@ -313,6 +313,14 @@ curl -o /dev/null -s -w "%{http_code}" http://<alb_dns_name>
 
 ---
 
+---
+## ⚠️ Challenges Faced
+
+- **Terraform state locking conflicts** — resolved using DynamoDB-based locking
+- **ALB health check failures** — fixed by correcting target group path and security group rules
+- **OIDC IAM setup complexity** — configured secure role-based access for GitHub Actions
+---
+
 ## 🔮 Future Improvements
 
 | Improvement | Description |
