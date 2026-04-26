@@ -73,5 +73,3 @@ module "vpc_ec2_stack" {
   # User Data
   user_data_script = var.user_data_script
 }
-
-# Output the ALB DNS name from the module
