@@ -273,9 +273,7 @@ Add the following secrets to your GitHub repository:
 
 | Secret | Description |
 |---|---|
-| `AWS_ACCESS_KEY_ID` | IAM user access key |
-| `AWS_SECRET_ACCESS_KEY` | IAM user secret key |
-
+| `MY_ARN` | AWS OIDC ARN |
 Push to `main` (or open a PR) — the pipeline handles everything from there.
 
 ---
@@ -290,9 +288,6 @@ terraform validate
 
 # Check for Terraform best practice violations
 tflint --recursive
-
-# Run static security analysis
-tfsec .
 ```
 
 ### Connectivity Testing
@@ -347,37 +342,31 @@ curl -o /dev/null -s -w "%{http_code}" http://<alb_dns_name>
 ## 📁 Repository Structure
 
 ```
-.
-├── .github/
-│   └── workflows/
-│       └── terraform.yml       # GitHub Actions CI/CD pipeline
-├── modules/
-│   ├── vpc/                    # VPC and networking
-│   ├── alb/                    # Application Load Balancer
-│   ├── asg/                    # Auto Scaling Group and Launch Template
-│   └── nat/                    # NAT Gateway
-├── main.tf                     # Root module
-├── variables.tf                # Input variables
-├── outputs.tf                  # Terraform outputs
-├── backend.tf                  # Remote state configuration
-├── terraform.tfvars.example    # Example variable values
-└── README.md
+AWS-High-Availability-Web-Architecture-Task/
+├── main.tf                  # Root module — calls the modules
+├── variables.tf             # Input variables for root module
+├── outputs.tf               # Output values
+├── provider.tf              # AWS provider configuration
+├── backend.tf               # Remote backend (S3 + DynamoDB)
+├── .terraform.lock.hcl      # Dependency lock file
+├── .gitignore               # Git ignore rules
+│
+├── modules/                 # Single reusable module
+│   ├── main.tf              # All resources (VPC, ALB, ASG, NAT, etc.)
+│   ├── variables.tf         # Module input variables
+│   └── outputs.tf           # Module outputs
+│
+├── .terraform/              # Terraform working directory (auto-generated)
+│
+└── Task-2-Images/           # Architecture diagrams & screenshots
 ```
 
 ---
 
 ## 👤 Author
 
-**Your Name**
-- GitHub: [@your-username](https://github.com/your-username)
-- LinkedIn: [linkedin.com/in/your-profile](https://linkedin.com/in/your-profile)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
----
+**Mohankumar.U**
+- GitHub: [@your-username](https://github.com/Mohan41204)
+- LinkedIn: [linkedin.com/in/your-profile](www.linkedin.com/in/mohandevop)
 
 > ⭐ If you found this project useful or learned something from it, consider giving it a star!
