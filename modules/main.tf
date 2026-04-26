@@ -134,7 +134,6 @@ resource "aws_security_group" "lb_sg" {
   }
 }
 
-# SECURITY GROUP FOR PRIVATE EC2 INSTANCES
 resource "aws_security_group" "private_sg" {
   name        = var.private_sg_name
   description = var.private_sg_description
@@ -160,7 +159,6 @@ resource "aws_security_group" "private_sg" {
   }
 }
 
-# APPLICATION LOAD BALANCER
 resource "aws_lb" "test" {
   name               = var.alb_name
   internal           = var.lb_internal
@@ -176,7 +174,6 @@ resource "aws_lb" "test" {
   }
 }
 
-# ALB LISTENER
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.test.arn
   port              = var.listener_port
@@ -188,7 +185,6 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-# TARGET GROUP
 resource "aws_lb_target_group" "TG" {
   name     = var.target_group_name
   port     = var.target_group_port
@@ -204,7 +200,6 @@ resource "aws_lb_target_group" "TG" {
   }
 }
 
-# LAUNCH TEMPLATE
 resource "aws_launch_template" "Template" {
   name = var.ec2_template_name
 
@@ -248,7 +243,6 @@ resource "aws_launch_template" "Template" {
   }
 }
 
-# AUTO SCALING GROUP
 resource "aws_autoscaling_group" "bar" {
   name = var.asg_name
 
