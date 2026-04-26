@@ -65,8 +65,6 @@ This progression reflects how modern cloud infrastructure evolves from experimen
 | **State Backend** | S3 + DynamoDB | Remote state storage and locking |
 | **CI/CD** | GitHub Actions | Automated pipeline for validate → plan → apply |
 | **Linting** | TFLint | Terraform code quality checks |
-| **Security Scanning** | tfsec | Static security analysis for IaC |
-
 ---
 
 ## 📦 Terraform Module Structure
@@ -186,67 +184,6 @@ The GitHub Actions pipeline enforces a **validate → scan → plan → apply** 
 
 > **Why use the tfplan artifact?**
 > The apply stage uses the exact same plan generated during CI. This means what was reviewed and validated is exactly what gets deployed — no drift between plan and apply.
-
-### Pipeline File
-
-```yaml
-# .github/workflows/terraform.yml (simplified)
-
-name: Terraform CI/CD
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  ci:
-    name: Validate & Plan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Validate
-        run: terraform validate
-
-      - name: Run TFLint
-        uses: terraform-linters/setup-tflint@v3
-        run: tflint --recursive
-
-      - name: Run tfsec
-        uses: aquasecurity/tfsec-action@v1.0.0
-
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan
-
-      - name: Upload Plan Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan
-          path: tfplan
-
-  cd:
-    name: Apply Infrastructure
-    runs-on: ubuntu-latest
-    needs: ci
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-
-      - name: Download Plan Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: tfplan
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
-```
 
 ---
 
