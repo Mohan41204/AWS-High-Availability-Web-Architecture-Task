@@ -92,10 +92,10 @@ AWS-High_Availability-Web-Architecture/
 ```
 
 **Why modular?**
-- Each module has a **single responsibility** — easier to test and maintain
-- Modules can be **reused** across environments (dev, staging, prod) with different variables
-- Changes to one module don't affect others, reducing blast radius
-- Outputs from one module are passed as inputs to another (e.g., VPC outputs feed ALB and ASG)
+- A single reusable module manages all infrastructure (VPC, ALB, ASG, NAT), keeping the root configuration clean and simple
+- Variables allow the same module to be reused across environments (dev, staging, prod) with different values
+- Centralizing logic in one module makes updates easier, since changes are handled in one place
+- Outputs from the module are exposed to the root module for easy access (ALB DNS)
 
 ---
 
