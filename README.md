@@ -72,33 +72,23 @@ This progression reflects how modern cloud infrastructure evolves from experimen
 The project follows a **modular Terraform design** — each AWS concern is encapsulated in its own reusable module.
 
 ```
-terraform/
-├── main.tf                  # Root module — wires all modules together
-├── variables.tf             # Input variables for the root module
-├── outputs.tf               # Exposed outputs (ALB DNS, VPC ID, etc.)
-├── backend.tf               # Remote state configuration (S3 + DynamoDB)
-├── terraform.tfvars         # Environment-specific variable values
+AWS-High_Availability-Web-Architecture/
+├── main.tf                  # Root module — calls the modules
+├── variables.tf             # Input variables for root module
+├── outputs.tf               # Output values
+├── provider.tf              # AWS provider configuration
+├── backend.tf               # Remote backend (S3 + DynamoDB)
+├── .terraform.lock.hcl      # Dependency lock file
+├── .gitignore               # Git ignore rules
 │
-└── modules/
-    ├── vpc/                 # VPC, subnets, IGW, route tables
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── alb/                 # Application Load Balancer, target groups, listeners
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    ├── asg/                 # Launch template, Auto Scaling Group, scaling policies
-    │   ├── main.tf
-    │   ├── variables.tf
-    │   └── outputs.tf
-    │
-    └── nat/                 # NAT Gateway and Elastic IP
-        ├── main.tf
-        ├── variables.tf
-        └── outputs.tf
+├── modules/                 # Single reusable module
+│   ├── main.tf              # All resources (VPC, ALB, ASG, NAT, etc.)
+│   ├── variables.tf         # Module input variables
+│   └── outputs.tf           # Module outputs
+│
+├── .terraform/              # Terraform working directory (auto-generated)
+│
+└── Task-2-Images/           # Architecture diagrams & screenshots
 ```
 
 **Why modular?**
@@ -131,9 +121,9 @@ A DynamoDB table handles distributed locking:
 # backend.tf
 terraform {
   backend "s3" {
-    bucket         = "your-terraform-state-bucket"
-    key            = "aws-ha-architecture/terraform.tfstate"
-    region         = "us-east-1"
+    bucket         = "tfbackend24426"
+    key            = "dev/network/terraform.tfstate"
+    region         = "ap-south-1"
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
   }
@@ -173,7 +163,6 @@ The GitHub Actions pipeline enforces a **validate → scan → plan → apply** 
 | `terraform validate` | Terraform | Validates HCL syntax and configuration correctness |
 | `terraform plan` | Terraform | Generates and saves execution plan (`tfplan` artifact) |
 | `tflint` | TFLint | Enforces Terraform best practices and catches common errors |
-| `tfsec` | tfsec | Scans for security misconfigurations in IaC code |
 
 ### CD Stage — Continuous Deployment
 
@@ -226,8 +215,8 @@ The GitHub Actions pipeline enforces a **validate → scan → plan → apply** 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/aws-ha-architecture.git
-cd aws-ha-architecture
+git clone https://github.com/Mohan41204/AWS-High-Availability-Web-Architecture-Task
+cd AWS-High-Availability-Web-Architecture-Task
 ```
 
 ### 2. Create Remote Backend Resources
