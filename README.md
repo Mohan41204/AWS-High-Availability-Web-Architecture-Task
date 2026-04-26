@@ -27,7 +27,6 @@ The architecture is designed around AWS best practices:
 
 This project was built iteratively, reflecting a real-world DevOps maturity journey:
 
-```
 Phase 1 → Manual AWS Console Setup
           "Click-ops" — resources created manually via AWS Management Console.
           Functional but not reproducible, version-controlled, or scalable.
@@ -39,7 +38,6 @@ Phase 2 → Terraform (Infrastructure as Code)
 Phase 3 → GitHub Actions CI/CD Pipeline
           Deployment fully automated — every push triggers validation, security scans,
           planning, and controlled apply. Zero manual steps required.
-```
 
 This progression reflects how modern cloud infrastructure evolves from experimentation to enterprise-grade automation.
 
