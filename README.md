@@ -193,7 +193,6 @@ The GitHub Actions pipeline enforces a **validate → scan → plan → apply** 
 ### 🔒 Security
 - EC2 instances live in **private subnets** — no direct internet exposure
 - **Security groups** follow least-privilege: ALB accepts HTTP/HTTPS; EC2 only accepts traffic from ALB
-- tfsec integrated into CI catches security misconfigurations before deployment
 - State stored encrypted in S3
 
 ### 🤖 Automation
