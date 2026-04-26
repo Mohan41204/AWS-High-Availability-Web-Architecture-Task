@@ -28,7 +28,7 @@ The architecture is designed around AWS best practices:
 This project was built iteratively, reflecting a real-world DevOps maturity journey:
 
 ### Phase 1  
-Manual AWS Console Setup "Click-ops" — resources created manually via AWS Management Console. Functional but not reproducible, version-controlled, or scalable.
+Manual AWS Console setup ("click-ops") — resources were created manually via the AWS Management Console. Functional but not reproducible, version-controlled, or scalable.
 
 ### Phase 2 
 Terraform (Infrastructure as Code) All AWS resources converted into modular Terraform configurations. Infrastructure became reproducible, versionable, and reviewable via Pull Requests.
@@ -69,7 +69,7 @@ This progression reflects how modern cloud infrastructure evolves from experimen
 
 ## 📦 Terraform Module Structure
 
-The project follows a **modular Terraform design** — each AWS concern is encapsulated in its own reusable module.
+The project uses a reusable Terraform module to organize infrastructure components in a clean and maintainable way.
 
 ```
 AWS-High_Availability-Web-Architecture/
@@ -121,7 +121,7 @@ A DynamoDB table handles distributed locking:
 # backend.tf
 terraform {
   backend "s3" {
-    bucket         = "tfbackend24426"
+    bucket         = "your-terraform-state-bucket"
     key            = "dev/network/terraform.tfstate"
     region         = "ap-south-1"
     dynamodb_table = "terraform-state-lock"
@@ -241,38 +241,31 @@ aws dynamodb create-table \
   --billing-mode PAY_PER_REQUEST
 ```
 
-### 3. Configure Variables
-
-```bash
-cp terraform.tfvars.example terraform.tfvars
-# Edit terraform.tfvars with your values (region, AMI ID, key pair, etc.)
-```
-
-### 4. Initialize Terraform
+### 3. Initialize Terraform
 
 ```bash
 terraform init
 ```
 
-### 5. Plan & Review
+### 4. Plan & Review
 
 ```bash
 terraform plan
 ```
 
-### 6. Apply Infrastructure
+### 5. Apply Infrastructure
 
 ```bash
 terraform apply
 ```
 
-### 7. CI/CD (Automated)
+### 6. CI/CD (Automated)
 
 Add the following secrets to your GitHub repository:
 
 | Secret | Description |
 |---|---|
-| `MY_ARN` | AWS OIDC ARN |
+| `MY_ARN` | GitHub Actions uses OpenID Connect (OIDC) to securely authenticate with AWS without storing long-term credentials. |
 Push to `main` (or open a PR) — the pipeline handles everything from there.
 
 ---
@@ -365,7 +358,7 @@ AWS-High-Availability-Web-Architecture-Task/
 ## 👤 Author
 
 **Mohankumar.U**
-- GitHub: [@your-username](https://github.com/Mohan41204)
-- LinkedIn: [linkedin.com/in/your-profile](www.linkedin.com/in/mohandevop)
+- GitHub: [https://github.com/Mohan41204](https://github.com/Mohan41204)
+- LinkedIn: [https://www.linkedin.com/in/mohandevop](https://www.linkedin.com/in/mohandevop)
 
 > ⭐ If you found this project useful or learned something from it, consider giving it a star!
