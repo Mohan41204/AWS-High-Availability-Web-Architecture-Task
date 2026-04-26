@@ -69,7 +69,7 @@ This progression reflects how modern cloud infrastructure evolves from experimen
 
 ## 📦 Terraform Module Structure
 
-The project uses a reusable Terraform module to organize infrastructure components in a clean and maintainable way.
+The project uses a reusable Terraform module to manage all infrastructure components in a clean and maintainable way.
 
 ```
 AWS-High_Availability-Web-Architecture/
