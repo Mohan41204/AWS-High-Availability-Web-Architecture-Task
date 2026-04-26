@@ -313,7 +313,6 @@ curl -o /dev/null -s -w "%{http_code}" http://<alb_dns_name>
 
 ---
 
----
 ## ⚠️ Challenges Faced
 
 - **Terraform state locking conflicts** — resolved using DynamoDB-based locking
