@@ -73,22 +73,22 @@ The project uses a reusable Terraform module to organize infrastructure componen
 
 ```
 AWS-High_Availability-Web-Architecture/
-├── main.tf                  # Root module — calls the modules
-├── variables.tf             # Input variables for root module
-├── outputs.tf               # Output values
-├── provider.tf              # AWS provider configuration
-├── backend.tf               # Remote backend (S3 + DynamoDB)
-├── .terraform.lock.hcl      # Dependency lock file
-├── .gitignore               # Git ignore rules
+├── main.tf                  
+├── variables.tf             
+├── outputs.tf               
+├── provider.tf              
+├── backend.tf               
+├── .terraform.lock.hcl      
+├── .gitignore               
 │
-├── modules/                 # Single reusable module
-│   ├── main.tf              # All resources (VPC, ALB, ASG, NAT, etc.)
-│   ├── variables.tf         # Module input variables
-│   └── outputs.tf           # Module outputs
+├── modules/                 
+│   ├── main.tf              
+│   ├── variables.tf         
+│   └── outputs.tf           
 │
-├── .terraform/              # Terraform working directory (auto-generated)
+├── .terraform/              
 │
-└── Task-2-Images/           # Architecture diagrams & screenshots
+└── Task-2-Images/           
 ```
 
 **Why modular?**
@@ -334,30 +334,6 @@ curl -o /dev/null -s -w "%{http_code}" http://<alb_dns_name>
 | **Terratest** | Write automated infrastructure tests using Terratest (Go) |
 | **Terraform Drift Detection** | Scheduled pipeline job to detect config drift |
 | **Secrets Manager** | Migrate sensitive config to AWS Secrets Manager |
-
----
-
-## 📁 Repository Structure
-
-```
-AWS-High-Availability-Web-Architecture-Task/
-├── main.tf                  # Root module — calls the modules
-├── variables.tf             # Input variables for root module
-├── outputs.tf               # Output values
-├── provider.tf              # AWS provider configuration
-├── backend.tf               # Remote backend (S3 + DynamoDB)
-├── .terraform.lock.hcl      # Dependency lock file
-├── .gitignore               # Git ignore rules
-│
-├── modules/                 # Single reusable module
-│   ├── main.tf              # All resources (VPC, ALB, ASG, NAT, etc.)
-│   ├── variables.tf         # Module input variables
-│   └── outputs.tf           # Module outputs
-│
-├── .terraform/              # Terraform working directory (auto-generated)
-│
-└── Task-2-Images/           # Architecture diagrams & screenshots
-```
 
 ---
 
